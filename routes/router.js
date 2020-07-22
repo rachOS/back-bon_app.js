@@ -1,10 +1,16 @@
-const express = require('express');
+// import modules
+const express = require("express");
 const router = express.Router();
 
-const users = require('./users');
-const foods = require('./foods');
+// import CRUD
+const users = require("./users");
+const foods = require("./foods");
+const brands = require("./brands");
 
-router.use('/users', users);
-router.use('/foods', foods);
+// init route
+router.use("/users", users);
+router.use("/foods", foods);
+router.use("/brands", brands);
 
+// export
 module.exports = router;
