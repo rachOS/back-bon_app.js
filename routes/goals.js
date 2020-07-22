@@ -4,7 +4,7 @@ const connection = require("../config");
 
 // get all foods
 router.get("/", (req, res) => {
-    connection.query("SELECT * FROM `food`", (err, results) => {
+    connection.query("SELECT * FROM `goal`", (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -13,12 +13,12 @@ router.get("/", (req, res) => {
     });
 });
 
-// get one food
-router.get("/:idFood", (req, res) => {
-    const { idFood } = req.params;
+// get one user goal
+router.get("/:idGoal", (req, res) => {
+    const { idGoal } = req.params;
     connection.query(
-        "SELECT * FROM `food` WHERE id = ?",
-        [idFood],
+        "SELECT * FROM `goal` WHERE id = ?",
+        [idGoal],
         (err, results) => {
             if (err) {
                 res.status(500).send(err);
@@ -32,10 +32,10 @@ router.get("/:idFood", (req, res) => {
     );
 });
 
-// create one food
+// create one user goal
 router.post("/", (req, res) => {
     const formData = req.body;
-    connection.query("INSERT INTO `food` SET ?", [formData], (err, results) => {
+    connection.query("INSERT INTO `goal` SET ?", [formData], (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -44,13 +44,13 @@ router.post("/", (req, res) => {
     });
 });
 
-// put one ?
-router.put("/:idFood", (req, res) => {
-    const { idFood } = req.params;
+// edit one user goal
+router.put("/:idGoal", (req, res) => {
+    const { idGoal } = req.params;
     const formData = req.body;
     connection.query(
-        "UPDATE `food` SET ? WHERE id = ?",
-        [formData, idFood],
+        "UPDATE `goal` SET ? WHERE id = ?",
+        [formData, idGoal],
         (err) => {
             if (err) {
                 res.status(500).send(err);
@@ -62,9 +62,9 @@ router.put("/:idFood", (req, res) => {
 });
 
 // delete one food
-router.delete("/:idFood", (req, res) => {
-    const { idFood } = req.params;
-    connection.query("DELETE FROM `food` WHERE id = ?", [idFood], (err) => {
+router.delete("/:idGoal", (req, res) => {
+    const { idGoal } = req.params;
+    connection.query("DELETE FROM `goal` WHERE id = ?", [idGoal], (err) => {
         if (err) {
             res.status(500).send(err);
         } else {
