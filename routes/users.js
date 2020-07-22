@@ -4,7 +4,7 @@ const connection = require("../config");
 
 // get all users
 router.get("/", (req, res) => {
-    connection.query("SELECT * FROM user", (err, results) => {
+    connection.query("SELECT * FROM `user`", (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 router.get("/:idUser", (req, res) => {
     const { idUser } = req.params;
     connection.query(
-        "SELECT * FROM user WHERE id = ?",
+        "SELECT * FROM `user` WHERE id = ?",
         [idUser],
         (err, results) => {
             if (err) {
@@ -35,7 +35,7 @@ router.get("/:idUser", (req, res) => {
 // create one food
 router.post("/", (req, res) => {
     const formData = req.body;
-    connection.query("INSERT INTO user SET ?", [formData], (err, results) => {
+    connection.query("INSERT INTO `user` SET ?", [formData], (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -49,7 +49,7 @@ router.put("/:idUser", (req, res) => {
     const { idUser } = req.params;
     const formData = req.body;
     connection.query(
-        "UPDATE user SET ? WHERE id = ?",
+        "UPDATE `user` SET ? WHERE id = ?",
         [formData, idUser],
         (err) => {
             if (err) {

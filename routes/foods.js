@@ -4,7 +4,7 @@ const connection = require("../config");
 
 // get all foods
 router.get("/", (req, res) => {
-    connection.query("SELECT * FROM food", (err, results) => {
+    connection.query("SELECT * FROM `food`", (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
 router.get("/:idFood", (req, res) => {
     const { idFood } = req.params;
     connection.query(
-        "SELECT * FROM food WHERE id = ?",
+        "SELECT * FROM `food` WHERE id = ?",
         [idFood],
         (err, results) => {
             if (err) {
@@ -35,7 +35,7 @@ router.get("/:idFood", (req, res) => {
 // create one food
 router.post("/", (req, res) => {
     const formData = req.body;
-    connection.query("INSERT INTO food SET ?", [formData], (err, results) => {
+    connection.query("INSERT INTO `food` SET ?", [formData], (err, results) => {
         if (err) {
             res.status(500).send(err);
         } else {
@@ -49,7 +49,7 @@ router.put("/:idFood", (req, res) => {
     const { idFood } = req.params;
     const formData = req.body;
     connection.query(
-        "UPDATE food SET ? WHERE id = ?",
+        "UPDATE `food` SET ? WHERE id = ?",
         [formData, idFood],
         (err) => {
             if (err) {
@@ -64,7 +64,7 @@ router.put("/:idFood", (req, res) => {
 // delete one food
 router.delete("/:idFood", (req, res) => {
     const { idFood } = req.params;
-    connection.query("DELETE FROM food WHERE id = ?", [idFood], (err) => {
+    connection.query("DELETE FROM `food` WHERE id = ?", [idFood], (err) => {
         if (err) {
             res.status(500).send(err);
         } else {
