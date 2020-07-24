@@ -1,5 +1,5 @@
 # Bon'app.js back-end repository
-> Please go to the develop to see the code. Thank You.
+> Please go to the `develop branch`to see the code. Thank You.
 
 [link to the front-end repository](https://github.com/rachOS/front-bon_app.js)
 
