@@ -4,16 +4,14 @@
 
 npm start
 
-# Infos
-> Work on the preparation part of your project:
+## Infos
+### Work on the preparation part of your project:
 
-> Draw the wireframe
+Draw the wireframe
 
 [lin k to the wireframe](https://www.figma.com/proto/aIiZ52DFRyL46V1MobWHRC/Untitled?node-id=1%3A118&frame-preset-name=Desktop&scaling=min-zoom)
 
-> Create the CMD (MCD)
-
-Write user stories
+Create the CMD (MCD) - Write user stories
 
 [link tho the user stories and the MCD](https://github.com/rachOS/back-bon_app.js/tree/develop/misc)
 
