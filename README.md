@@ -1,6 +1,6 @@
 # Bon'app.js
-## back-end
-[link too the front-end repository](https://github.com/rachOS/front-bon_app.js)
+
+[link to the front-end repository](https://github.com/rachOS/front-bon_app.js)
 
 npm start
 
