@@ -11,6 +11,10 @@ app.use(cors());
 
 app.use('/api', routes);
 
+// conditional test for Heroku PORT
+if (port == null || port == "") {
+    port = 8000;
+  }
 
 app.listen(port, (err) => {
   if(err) {
