@@ -1,11 +1,16 @@
 const { ERROR_MESSAGE } = require("./CONST");
 
 module.exports.handleErrors = ({ details }) => {
-  const [properties] = details;
-  const { message, type, path } = properties;
+  console.log(details);
   const Errors = {};
-
-  details ? ((Errors.message = ERROR_MESSAGE), (Errors[path] = message)) : null;
+  details
+    ? details.map((err) => {
+        return (
+          (Errors.Errors = ERROR_MESSAGE),
+          (Errors[err.path] = { expected: err.message })
+        );
+      })
+    : null;
 
   return Errors;
 };

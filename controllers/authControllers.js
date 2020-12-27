@@ -1,10 +1,23 @@
-const { UsersShema } = require("../models/UsersShema");
+const { UserShema, userOption } = require("../models/UserShema");
 const { handleErrors } = require("../functions/handleErrors");
+const bcrypt = require("bcrypt");
 
-module.exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+module.exports.signup = async (req, res, next) => {
+  const { email, password, repeat_password } = req.body;
+  const form = {
+    email: email,
+    password: await bcrypt.hash(password, 10),
+  };
   try {
-    res.status(201).json(await UsersShema.validateAsync({ email, password }));
+    if (
+      await UserShema.validateAsync(
+        { email, password, repeat_password },
+        userOption
+      )
+    ) {
+      res.status(201).json(form);
+    }
+    next();
   } catch (error) {
     res.status(500).json(handleErrors(error));
   }
