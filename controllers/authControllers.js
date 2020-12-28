@@ -12,6 +12,7 @@ module.exports.signup = async (req, res, next) => {
   try {
     form.password = await bcrypt.hash(password, 10);
     const userDatas = await UserShema.validateAsync(form, userOption);
+    console.log("BACK", userDatas);
     res.status(201).json(userDatas);
     next();
   } catch (error) {
