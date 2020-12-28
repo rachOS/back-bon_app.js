@@ -6,17 +6,13 @@ module.exports.signup = async (req, res, next) => {
   const { email, password, repeat_password } = req.body;
   const form = {
     email: email,
-    password: await bcrypt.hash(password, 10),
+    password: password,
+    //repeat_password: repeat_password,
   };
   try {
-    if (
-      await UserShema.validateAsync(
-        { email, password, repeat_password },
-        userOption
-      )
-    ) {
-      res.status(201).json(form);
-    }
+    form.password = await bcrypt.hash(password, 10);
+    const userDatas = await UserShema.validateAsync(form, userOption);
+    res.status(201).json(userDatas);
     next();
   } catch (error) {
     res.status(500).json(handleErrors(error));
