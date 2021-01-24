@@ -4,7 +4,7 @@ const {
   USER_PASSWORD_VALIDATION,
 } = require("../helper/CONST");
 
-const UserShema = Joi.object({
+module.exports.UserShema = Joi.object({
   email: Joi.string()
     .email({
       minDomainSegments: 2,
@@ -15,21 +15,12 @@ const UserShema = Joi.object({
   password: Joi.string().min(8).required().messages(USER_PASSWORD_VALIDATION),
   //repeat_password: Joi.ref("password"),
 });
-const userOption = {
+module.exports.userOption = {
   abortEarly: false,
   warning: true,
 };
 
 /*
- name, age, height, weight, goal
-
+TODO
+ validation shema for name, age, height, weight, goal
  */
-module.exports.AuthUserShema = Joi.object({
-  email: Joi.string().email({
-    minDomainSegments: 2,
-    tlds: { allow: ["com", "net", "fr"] },
-  }),
-  password: Joi.string().pattern(new RegExp("^[a-zA-Z0-9]{3,30}$")),
-});
-
-module.exports = { UserShema, userOption };
