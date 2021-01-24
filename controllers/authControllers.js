@@ -2,7 +2,7 @@ const { UserShema, userOption } = require("../models/UserShema");
 const { handleErrors } = require("../helper/handleErrors");
 const connection = require("../config");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const { createToken } = require("../helper/jwt");
 
 module.exports.signup = async (req, res) => {
   const { email, password, repeat_password } = req.body;
@@ -11,10 +11,7 @@ module.exports.signup = async (req, res) => {
     password: password,
     //repeat_password: repeat_password,
   };
-  const createToken = (email) => {
-    return jwt.sign({ email: email }, "secret key", { expiresIn: 60 });
-  };
-  createToken(email);
+
   try {
     const userDatas = await UserShema.validateAsync(form, userOption);
     userDatas.password = await bcrypt.hash(password, 10);
@@ -31,25 +28,40 @@ module.exports.signup = async (req, res) => {
       }
     );
   } catch (error) {
-    return res.status(500).json(handleErrors(error));
+    return res.status(400).json(handleErrors(error));
   }
 };
 
 module.exports.login = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const authUser = UserShema.validate({ email, password });
-    res.status(200).send(authUser.value);
+    await connection.query(
+      "SELECT u.email, u.password FROM `user` as u",
+      async (err, result) => {
+        if (err) {
+          return res.sendStatus(500);
+        } else {
+          const user = await result.find((user) => user.email === email);
+          if (user) {
+            const auth = await bcrypt.compare(password, user.password);
+            if (auth) {
+              return res.status(200).send(user);
+            } else {
+              return res
+                .status(404)
+                .send({ message: "Le mdp ne correspond pas" });
+            }
+          } else {
+            return res.status(404).send({
+              message: "Le nom d'utilisateur est introuvable ou invalide",
+            });
+          }
+        }
+      }
+    );
   } catch (error) {
-    return res.status(500).json(handleErrors(error));
+    return res.json(handleErrors(error));
   }
 };
 
-module.exports.logout = (req, res) => {
-  /*  try {
-    res.send("logout");
-  } catch (error) {
-    //handleErrors(error);
-    res.status(500).send(error);
-  } */
-};
+module.exports.logout = (req, res) => {};
