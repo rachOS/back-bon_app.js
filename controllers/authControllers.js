@@ -1,8 +1,9 @@
 const { UserShema, userOption } = require("../models/UserShema");
-const { handleErrors } = require("../functions/handleErrors");
+const { handleErrors } = require("../helper/handleErrors");
 const bcrypt = require("bcrypt");
+const connection = require("../config");
 
-module.exports.signup = async (req, res, next) => {
+module.exports.signup = async (req, res) => {
   const { email, password, repeat_password } = req.body;
   const form = {
     email: email,
@@ -10,13 +11,21 @@ module.exports.signup = async (req, res, next) => {
     //repeat_password: repeat_password,
   };
   try {
-    form.password = await bcrypt.hash(password, 10);
     const userDatas = await UserShema.validateAsync(form, userOption);
-    console.log("BACK", userDatas);
-    res.status(201).json(userDatas);
-    next();
+    userDatas.password = await bcrypt.hash(password, 10);
+    connection.query(
+      "INSERT INTO `user` SET ?",
+      [userDatas],
+      (err, results) => {
+        if (err) {
+          return res.status(500).json({ message: err.sqlMessage });
+        } else {
+          return res.status(201).send(userDatas);
+        }
+      }
+    );
   } catch (error) {
-    res.status(500).json(handleErrors(error));
+    return res.status(500).json(handleErrors(error));
   }
 };
 
