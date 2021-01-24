@@ -2,7 +2,7 @@ const Joi = require("joi");
 const {
   USER_EMAIL_VALIDATION,
   USER_PASSWORD_VALIDATION,
-} = require("../functions/CONST");
+} = require("../helper/CONST");
 
 const UserShema = Joi.object({
   email: Joi.string()
@@ -13,7 +13,7 @@ const UserShema = Joi.object({
     .required()
     .messages(USER_EMAIL_VALIDATION),
   password: Joi.string().min(8).required().messages(USER_PASSWORD_VALIDATION),
-  repeat_password: Joi.ref("password"),
+  //repeat_password: Joi.ref("password"),
 });
 const userOption = {
   abortEarly: false,
