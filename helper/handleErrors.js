@@ -1,12 +1,16 @@
 const { ERROR_MESSAGE } = require("./CONST");
-
+/**
+ *Take data from Joi
+ *
+ * @param {Array<Object>} details  Destructurated from datas
+ */
 module.exports.handleErrors = ({ details }) => {
-  console.log(details);
+  console.log("Details", details);
   const Errors = {};
   details
     ? details.map((err) => {
         return (
-          (Errors.Errors = ERROR_MESSAGE),
+          (Errors.Error = ERROR_MESSAGE),
           (Errors[err.path] = { expected: err.message })
         );
       })
