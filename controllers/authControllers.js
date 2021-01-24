@@ -1,7 +1,8 @@
 const { UserShema, userOption } = require("../models/UserShema");
 const { handleErrors } = require("../helper/handleErrors");
-const bcrypt = require("bcrypt");
 const connection = require("../config");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 module.exports.signup = async (req, res) => {
   const { email, password, repeat_password } = req.body;
@@ -10,6 +11,10 @@ module.exports.signup = async (req, res) => {
     password: password,
     //repeat_password: repeat_password,
   };
+  const createToken = (email) => {
+    return jwt.sign({ email: email }, "secret key", { expiresIn: 60 });
+  };
+  createToken(email);
   try {
     const userDatas = await UserShema.validateAsync(form, userOption);
     userDatas.password = await bcrypt.hash(password, 10);
@@ -18,8 +23,9 @@ module.exports.signup = async (req, res) => {
       [userDatas],
       (err, results) => {
         if (err) {
-          return res.status(500).json({ message: err.sqlMessage });
+          return res.status(500).json({ message: "Cet email existe déjà" });
         } else {
+          res.cookie("jwt", createToken(userDatas.email));
           return res.status(201).send(userDatas);
         }
       }
@@ -30,14 +36,13 @@ module.exports.signup = async (req, res) => {
 };
 
 module.exports.login = async (req, res) => {
-  /* const { email, password } = req.body;
+  const { email, password } = req.body;
   try {
     const authUser = UserShema.validate({ email, password });
     res.status(200).send(authUser.value);
   } catch (error) {
-    //handleErrors(error);
-    res.status(500).send(error);
-  } */
+    return res.status(500).json(handleErrors(error));
+  }
 };
 
 module.exports.logout = (req, res) => {
