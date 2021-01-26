@@ -5,7 +5,7 @@ const { ERROR_MESSAGE } = require("./CONST");
  * @param {Array<Object>} details  Destructurated from datas
  */
 module.exports.handleErrors = ({ details }) => {
-  console.log("Details", details);
+  console.log("Errors Details", details);
   const Errors = {};
   details
     ? details.map((err) => {
