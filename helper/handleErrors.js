@@ -1,4 +1,4 @@
-const { ERROR_MESSAGE } = require("./CONST");
+const { ERROR_MESSAGE } = require("./ERRORS");
 /**
  *Take data from Joi
  *

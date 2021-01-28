@@ -4,12 +4,13 @@ class UserLogin {
   static getDbServiceInstance() {
     return instance ? instance : new UserLogin();
   }
-  async login() {
+  async login(email, password) {
     try {
       const response = new Promise((resolve, reject) => {
-        const query = "SELECT u.* , u.id FROM `user` as u";
-        connection.query(query, (err, results) => {
-          if (err) reject(new Error(err.message));
+        const query = "SELECT u.*  FROM `user` as u WHERE u.email = ?";
+        connection.query(query, [email, password], (err, results) => {
+          console.log(err);
+          if (err) reject(new Error(err));
           resolve(results);
         });
       });

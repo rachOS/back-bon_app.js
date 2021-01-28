@@ -1,9 +1,11 @@
 const { UserShema, userOption } = require("../models/UserShema");
+const { LoginShema } = require("../models/LoginShema");
 const { createUser } = require("../models/userCrud");
 const UserLogin = require("../models/userLogin");
 const { handleErrors } = require("../helper/handleErrors");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../helper/jwt");
+const { ERROR_MESSAGE } = require("../helper/ERRORS");
 
 module.exports.signup = async (req, res) => {
   const { email, password, repeat_password } = req.body;
@@ -24,12 +26,17 @@ module.exports.signup = async (req, res) => {
 
 module.exports.login = async (req, res, next) => {
   const timeLeft = 60 * 60 * 24;
+
   try {
     const { email, password } = req.body;
+    const form = {
+      email: email,
+      password: password,
+    };
+    await LoginShema.validateAsync(form, userOption);
+
     const db = UserLogin.getDbServiceInstance();
-    const result = db.login();
-    const users = await result.then((response) => response);
-    const user = await users.find((user) => user.email === email);
+    const [user] = await db.login(email, password).then((response) => response);
     if (user) {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
@@ -40,21 +47,7 @@ module.exports.login = async (req, res, next) => {
           sameSite: true,
         });
         res.status(200).json({ user });
-      } else {
-        /*
-      Todo
-      UserLoginShema  et  remplacer .send({ message: ""}) par le handleError
-      */
-        return res.status(404).send({ message: "Le mdp ne correspond pas" });
       }
-    } else {
-      /*
-      Todo
-      UserLoginShema  et  remplacer .send({ message: ""}) par le handleError
-      */
-      return res.status(404).send({
-        message: "Le nom d'utilisateur est introuvable ou invalide",
-      });
     }
     next();
   } catch (error) {
