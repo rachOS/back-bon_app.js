@@ -41,9 +41,17 @@ module.exports.login = async (req, res, next) => {
         });
         res.status(200).json({ user });
       } else {
+        /*
+      Todo
+      UserLoginShema  et  remplacer .send({ message: ""}) par le handleError
+      */
         return res.status(404).send({ message: "Le mdp ne correspond pas" });
       }
     } else {
+      /*
+      Todo
+      UserLoginShema  et  remplacer .send({ message: ""}) par le handleError
+      */
       return res.status(404).send({
         message: "Le nom d'utilisateur est introuvable ou invalide",
       });
