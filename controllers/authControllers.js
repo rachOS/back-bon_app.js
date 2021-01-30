@@ -52,7 +52,7 @@ module.exports.login = async (req, res, next) => {
         delete user.password;
         const accessToken = await createToken(user);
         await res.set("Authorization", `Bearer ${accessToken}`);
-        await res.status(200).cookie("jwt", accessToken, {
+        await res.cookie("jwt", accessToken, {
           httpOnly: true,
           maxAge: timeLeft,
           sameSite: true,
