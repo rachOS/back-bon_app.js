@@ -1,13 +1,22 @@
-const { json } = require("express");
 const jwt = require("jsonwebtoken");
+const { handleErrors } = require("../../helper/handleErrors");
 require("dotenv").config();
 
-module.exports.verifyToken = (req, res, next) => {
-  const token = req.headers.cookie && req.headers.cookie.slice(4);
-  if (token === null) return res.sendStatus(401);
-  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-    if (err) return res.status(403).json(err);
-    res.status(200).json(user);
-    next();
-  });
+/**
+ *  middleware to verify user session
+ * @returns {Object} user datas
+ */
+module.exports.verifyToken = async (req, res, next) => {
+  try {
+    const authToken = await req.cookies.jwt;
+    if (authToken === null) return await res.sendStatus(401);
+    await jwt.verify(authToken, process.env.SECRET_KEY, (err, user) => {
+      if (err) return res.status(403).json(err);
+      res.set("Authorization", `Bearer ${authToken}`);
+      res.status(200).json(user);
+      next();
+    });
+  } catch (error) {
+    return res.status(500).json(handleErrors(error));
+  }
 };

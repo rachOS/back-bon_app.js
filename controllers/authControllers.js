@@ -8,6 +8,11 @@ const { createToken } = require("../helper/jwt");
 const { verifyToken } = require("./middleware/verifyToken");
 const { ERROR_MESSAGE } = require("../helper/ERRORS");
 
+/***
+ * TODO
+ *  REMAKE with Model (like login)
+ *@returns {Object}
+ */
 module.exports.signup = async (req, res) => {
   const { email, password, repeat_password } = req.body;
   const form = {
@@ -25,9 +30,13 @@ module.exports.signup = async (req, res) => {
   }
 };
 
+/**
+ * Check validation shema,
+ * test if email math, then test decrypted password
+ * @returns {Object} cookie with token and user datas
+ */
 module.exports.login = async (req, res, next) => {
   const timeLeft = 60 * 60 * 24;
-
   try {
     const { email, password } = req.body;
     const form = {
@@ -35,19 +44,20 @@ module.exports.login = async (req, res, next) => {
       password: password,
     };
     await LoginShema.validateAsync(form, userOption);
-
     const db = UserLogin.getDbServiceInstance();
     const [user] = await db.login(email, password).then((response) => response);
     if (user) {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
         delete user.password;
-        res.cookie("jwt", createToken(user), {
+        const accessToken = await createToken(user);
+        await res.set("Authorization", `Bearer ${accessToken}`);
+        await res.status(200).cookie("jwt", accessToken, {
           httpOnly: true,
           maxAge: timeLeft,
           sameSite: true,
         });
-        res.status(200).json({ user });
+        await res.status(200).json({ user });
       }
     }
     next();
@@ -56,6 +66,11 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
+/**
+ *  autorization function for user session
+ *  verifyToken is a middleware
+ * @returns {Object} user datas
+ */
 module.exports.userSession = async (req, res, next) => {
   try {
     verifyToken(req, res, next);
@@ -63,4 +78,8 @@ module.exports.userSession = async (req, res, next) => {
     return res.status(500).json(handleErrors(error));
   }
 };
+
+/**
+ *  TODO
+ */
 module.exports.logout = (req, res) => {};
