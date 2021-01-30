@@ -19,6 +19,21 @@ class UserLogin {
       console.log(error);
     }
   }
+  async getUserDatas(id) {
+    try {
+      const response = new Promise((resolve, reject) => {
+        const query = "SELECT u.*  FROM `user` as u WHERE u.id = ?";
+        connection.query(query, [id], (err, results) => {
+          console.log(err);
+          if (err) reject(new Error(err));
+          resolve(results);
+        });
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 }
 
 module.exports = UserLogin;

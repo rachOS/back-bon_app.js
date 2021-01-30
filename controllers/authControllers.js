@@ -5,6 +5,7 @@ const UserLogin = require("../models/userLogin");
 const { handleErrors } = require("../helper/handleErrors");
 const bcrypt = require("bcrypt");
 const { createToken } = require("../helper/jwt");
+const { verifyToken } = require("./middleware/verifyToken");
 const { ERROR_MESSAGE } = require("../helper/ERRORS");
 
 module.exports.signup = async (req, res) => {
@@ -41,7 +42,7 @@ module.exports.login = async (req, res, next) => {
       const auth = await bcrypt.compare(password, user.password);
       if (auth) {
         delete user.password;
-        res.cookie("jwt", createToken(user.id), {
+        res.cookie("jwt", createToken(user), {
           httpOnly: true,
           maxAge: timeLeft,
           sameSite: true,
@@ -55,4 +56,11 @@ module.exports.login = async (req, res, next) => {
   }
 };
 
+module.exports.userSession = async (req, res, next) => {
+  try {
+    verifyToken(req, res, next);
+  } catch (error) {
+    return res.status(500).json(handleErrors(error));
+  }
+};
 module.exports.logout = (req, res) => {};
