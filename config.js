@@ -1,24 +1,24 @@
-const mysql = require('mysql');
-const dotenv = require('dotenv');
+const mysql = require("mysql");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
 const pool = mysql.createPool({
-  host: process.env.NODE_HOST,
-  user: process.env.NODE_USER,
-  password: process.env.NODE_PASSWORD,
-  database: process.env.NODE_DATABASE
+  host: process.env.DBHOST,
+  user: process.env.DBUSER,
+  password: process.env.DBPASSWORD,
+  database: process.env.DBDATABASE,
 });
 
 module.exports = {
-  query: function() {
+  query: function () {
     var sql_args = [];
     var args = [];
     for (var i = 0; i < arguments.length; i++) {
       args.push(arguments[i]);
     }
     var callback = args[args.length - 1]; //last arg is callback
-    pool.getConnection(function(err, connection) {
+    pool.getConnection(function (err, connection) {
       if (err) {
         console.log(err);
         return callback(err);
@@ -26,7 +26,7 @@ module.exports = {
       if (args.length > 2) {
         sql_args = args[1];
       }
-      connection.query(args[0], sql_args, function(err, results) {
+      connection.query(args[0], sql_args, function (err, results) {
         connection.release(); // always put connection back in pool after last query
         if (err) {
           console.log(err);
@@ -35,5 +35,5 @@ module.exports = {
         callback(null, results);
       });
     });
-  }
+  },
 };
