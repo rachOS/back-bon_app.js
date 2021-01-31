@@ -1,6 +1,5 @@
 const { UserShema, userOption } = require("../shemas/users/UserShema");
 const { LoginShema } = require("../shemas/users/LoginShema");
-const { createUser } = require("../models/userCrud");
 const User = require("../models/User");
 const { handleErrors } = require("../helper/handleErrors");
 const bcrypt = require("bcrypt");
