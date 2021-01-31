@@ -3,7 +3,7 @@ const { handleErrors } = require("../../helper/handleErrors");
 require("dotenv").config();
 
 /**
- *  middleware to verify user session
+ *  middleware to allow user session
  * @returns {Object} user datas
  */
 module.exports.verifyToken = async (req, res, next) => {
@@ -12,7 +12,6 @@ module.exports.verifyToken = async (req, res, next) => {
     if (authToken === null) return await res.sendStatus(401);
     await jwt.verify(authToken, process.env.SECRET_KEY, (err, user) => {
       if (err) return res.status(403).json(err);
-      res.set("Authorization", `Bearer ${authToken}`);
       res.status(200).json(user);
       next();
     });

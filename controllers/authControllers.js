@@ -51,13 +51,12 @@ module.exports.login = async (req, res, next) => {
       if (auth) {
         delete user.password;
         const accessToken = await createToken(user);
-        await res.set("Authorization", `Bearer ${accessToken}`);
         await res.cookie("jwt", accessToken, {
           httpOnly: true,
           maxAge: timeLeft,
           sameSite: true,
         });
-        await res.status(200).json({ user });
+        await res.status(200).json({ isAuthenticated: true });
       }
     }
     next();
