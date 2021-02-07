@@ -68,12 +68,14 @@ module.exports.login = async (req, res, next) => {
       if (auth) {
         delete user.password;
         const accessToken = await createToken(user);
-        await res.cookie("jwt", accessToken, {
-          httpOnly: true,
-          maxAge: timeLeft,
-          sameSite: true,
-        });
-        await res.status(200).json({ isAuthenticated: true });
+        await res
+          .status(200)
+          .cookie("jwt", accessToken, {
+            httpOnly: true,
+            maxAge: timeLeft,
+            sameSite: true,
+          })
+          .json({ isAuthenticated: true });
       }
     }
     next();
@@ -87,7 +89,7 @@ module.exports.login = async (req, res, next) => {
  *  verifyToken is a middleware
  * @returns {Object} user datas
  */
-module.exports.userProfil = async (req, res, next) => {
+module.exports.userProfile = async (req, res, next) => {
   try {
     verifyToken(req, res, next);
   } catch (error) {
