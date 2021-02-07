@@ -1,13 +1,13 @@
 const { Router } = require("express");
 const router = Router();
 const {
-  userProfil,
+  userProfile,
   signup,
   login,
   logout,
 } = require("../controllers/authControllers");
 
-router.get("/profil", userProfil);
+router.get("/profile", userProfile);
 router.post("/signup", signup);
 router.post("/login", login);
 router.delete("/logout", logout);

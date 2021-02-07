@@ -1,6 +1,6 @@
 {
-  "name": "template-back",
-  "version": "1.0.0",
+  "name": "back-end_bon-app",
+  "version": "0.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
