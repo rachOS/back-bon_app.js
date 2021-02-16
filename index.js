@@ -12,7 +12,7 @@ app.use(cookie());
 app.use(
   cors({
     credentials: true,
-    origin: `${process.env.CLEARDB_HOST}`,
+    origin: `https://front-bonapp.herokuapp.com`,
   })
 );
 
