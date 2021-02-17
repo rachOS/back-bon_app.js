@@ -21,7 +21,6 @@ module.exports.signup = async (req, res) => {
       password,
       //repeat_password: repeat_password,
     };
-    console.log("REQ", form);
     const userForm = await UserShema.validateAsync(form, userOption);
     userForm.password = await bcrypt.hash(password, 10);
     const db = User.getDbServiceInstance();
@@ -31,10 +30,9 @@ module.exports.signup = async (req, res) => {
         return response;
       })
       .catch((error) => res.status(500).send(handleErrors(error.Error)));
-    console.log("Create", createdUser);
     if (createdUser.insertId) {
       delete userForm.password;
-      userForm.id = createdUser.insertId;
+      //userForm.id = createdUser.insertId;
       const accessToken = await createToken(userForm);
       await res.cookie("jwt", accessToken, {
         httpOnly: true,
@@ -46,8 +44,7 @@ module.exports.signup = async (req, res) => {
         .json({ isCreated: true, id: createdUser.insertId });
     }
   } catch (error) {
-    console.log("LOG ERROR", error);
-    return res.status(400).json(error);
+    return res.status(400).json(handleErrors(error));
   }
 };
 
