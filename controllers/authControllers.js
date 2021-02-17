@@ -16,12 +16,12 @@ const timeLeft = 60 * 60 * 24;
 module.exports.signup = async (req, res) => {
   try {
     const { email, password, repeat_password } = req.body;
-    console.log("REQ", email, password);
     const form = {
-      email,
-      password,
+      email: email,
+      password: password,
       //repeat_password: repeat_password,
     };
+    console.log("REQ", form);
     const userForm = await UserShema.validateAsync(form, userOption);
     userForm.password = await bcrypt.hash(password, 10);
     const db = User.getDbServiceInstance();
