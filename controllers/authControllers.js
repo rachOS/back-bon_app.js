@@ -47,7 +47,7 @@ module.exports.signup = async (req, res) => {
     }
   } catch (error) {
     console.log("LOG ERROR", error);
-    return res.status(400).json(handleErrors(error));
+    return res.status(400).json(error);
   }
 };
 
