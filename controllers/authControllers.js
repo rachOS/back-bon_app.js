@@ -46,6 +46,7 @@ module.exports.signup = async (req, res) => {
         .json({ isCreated: true, id: createdUser.insertId });
     }
   } catch (error) {
+    console.log("LOG ERROR", error);
     return res.status(400).json(handleErrors(error));
   }
 };
