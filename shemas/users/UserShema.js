@@ -7,8 +7,9 @@ module.exports.UserShema = Joi.object({
       minDomainSegments: 2,
       tlds: { allow: ["com", "net", "fr"] },
     })
+    .required()
     .messages(ERROR_MESSAGE.USER.CREATE),
-  password: Joi.string().min(8).messages(ERROR_MESSAGE.USER.CREATE),
+  password: Joi.string().min(8).required().messages(ERROR_MESSAGE.USER.CREATE),
   //repeat_password: Joi.ref("password"),
 });
 module.exports.userOption = {

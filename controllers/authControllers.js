@@ -30,6 +30,7 @@ module.exports.signup = async (req, res) => {
         return response;
       })
       .catch((error) => res.status(500).send(handleErrors(error.Error)));
+    console.log("Create", createdUser);
     if (createdUser.insertId) {
       delete userForm.password;
       userForm.id = createdUser.insertId;
