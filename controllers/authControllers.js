@@ -17,14 +17,11 @@ module.exports.signup = async (req, res) => {
   try {
     const { email, password, repeat_password } = req.body;
     const form = {
-      email: email,
-      password: password,
+      email,
+      password,
       //repeat_password: repeat_password,
     };
-    const userForm = await UserShema.validateAsync(
-      { email, password },
-      userOption
-    );
+    const userForm = await UserShema.validateAsync(form, userOption);
     userForm.password = await bcrypt.hash(password, 10);
     const db = User.getDbServiceInstance();
     const createdUser = await db
