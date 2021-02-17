@@ -7,7 +7,7 @@ const cors = require("cors");
 const routes = require("./routes/router");
 
 const local = `http://localhost:3000`;
-const remote = "https://front-bonapp.herokuapp.com/api";
+const remote = "https://back-bonapp.herokuapp.com";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookie());
