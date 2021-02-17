@@ -17,8 +17,8 @@ module.exports.signup = async (req, res) => {
   try {
     const { email, password, repeat_password } = req.body;
     const form = {
-      email: email,
-      password: password,
+      email,
+      password,
       //repeat_password: repeat_password,
     };
     console.log("REQ", form);
