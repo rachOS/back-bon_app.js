@@ -16,6 +16,7 @@ const timeLeft = 60 * 60 * 24;
 module.exports.signup = async (req, res) => {
   try {
     const { email, password, repeat_password } = req.body;
+    console.log("REQ", email, password);
     const form = {
       email,
       password,
