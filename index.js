@@ -6,13 +6,15 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const routes = require("./routes/router");
 
+const local = `http://localhost:3000`;
+const remote = "https://front-bonapp.herokuapp.com";
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookie());
 app.use(
   cors({
     credentials: true,
-    origin: `https://front-bonapp.herokuapp.com`,
+    origin: remote,
   })
 );
 
