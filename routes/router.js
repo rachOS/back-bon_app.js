@@ -10,6 +10,7 @@ const foods = require("./foods");
 const groups = require("./groups");
 const brands = require("./brands");
 const auth = require("./authRoutes");
+const recipe = require("./recipes");
 
 // init route
 router.use("/users", users);
@@ -19,6 +20,7 @@ router.use("/foods", foods);
 router.use("/groups", groups);
 router.use("/brands", brands);
 router.use("/auth", auth);
+router.use("/recipes", recipe);
 
 // export
 module.exports = router;
