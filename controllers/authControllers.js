@@ -17,8 +17,8 @@ module.exports.signup = async (req, res) => {
   try {
     const { email, password, repeat_password } = req.body;
     const form = {
-      email: email,
-      password: password,
+      email,
+      password,
       //repeat_password: repeat_password,
     };
     const userForm = await UserShema.validateAsync(form, userOption);
@@ -29,10 +29,10 @@ module.exports.signup = async (req, res) => {
       .then((response) => {
         return response;
       })
-      .catch((error) => res.status(500).send(handleErrors(error)));
+      .catch((error) => res.status(500).send(handleErrors(error.Error)));
     if (createdUser.insertId) {
       delete userForm.password;
-      userForm.id = createdUser.insertId;
+      //userForm.id = createdUser.insertId;
       const accessToken = await createToken(userForm);
       await res.cookie("jwt", accessToken, {
         httpOnly: true,

@@ -14,7 +14,7 @@ app.use(cookie());
 app.use(
   cors({
     credentials: true,
-    origin: local,
+    origin: [local, remote],
   })
 );
 
