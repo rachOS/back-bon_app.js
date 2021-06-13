@@ -74,4 +74,45 @@ router.delete("/:idRecipe", (req, res) => {
   });
 });
 
+/**foods_recipe */
+router.get("/:idRecipe/foods", async (req, res) => {
+  try {
+    const {idRecipe} = req.params
+    const sql = "SELECT *\
+    FROM recipe AS r\
+    LEFT JOIN food_recipe AS fr ON (r.id=fr.id_recipe)\
+    JOIN food AS f ON (f.id=fr.id_food)\
+    WHERE r.id = ? \
+    "
+    await connection.query(sql, [idRecipe], async (error, result) => {
+      if (error) {
+        return await res.status(500).send(error);
+        
+     } else {
+        return await res.status(200).json(result);
+        
+     }
+        
+    })
+  } catch (error) {
+    await console.error(error);
+  }
+})
+router.post("/foods", async (req, res) => {
+  try {
+    const sql = "INSERT INTO `food_recipe` SET ? "
+    const data =  await req.body
+    await connection.query(sql, [data], (error, result) => {
+
+      if (error) {
+        return res.status(500).send(error);
+      } else {
+        return res.status(200).json(result);
+      }
+  
+    })
+  } catch (error) {
+     console.error(error);
+  }
+})
 module.exports = router;
